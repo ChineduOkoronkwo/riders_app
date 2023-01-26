@@ -1,6 +1,9 @@
 
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'custom_form_text_field.dart';
 
@@ -19,6 +22,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController confirmPasswordController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController locationController = TextEditingController();
+
+  XFile? imageXFile;
+  final ImagePicker _imagePicker = ImagePicker();
+
+  Future<void> _getImage() async {
+    imageXFile = await _imagePicker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      imageXFile;
+    });
+  }
 
   Future<void> signup() async {
 
@@ -114,6 +127,29 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
+  InkWell _getImagePicker() {
+    return InkWell(
+        onTap: _getImage,
+        child: CircleAvatar(
+          radius: MediaQuery.of(context).size.width * 0.20,
+          backgroundColor: Colors.white,
+          backgroundImage:
+              imageXFile == null ? null : FileImage(File(imageXFile!.path)),
+          child: _getImageIcon(context),
+        ));
+  }
+
+  Widget? _getImageIcon(BuildContext context) {
+    if (imageXFile == null) {
+      return Icon(
+        Icons.add_photo_alternate,
+        size: MediaQuery.of(context).size.width * 0.20,
+        color: Colors.grey,
+      );
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -123,6 +159,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           const SizedBox(
             height: 10,
           ),
+          _getImagePicker(),
           const SizedBox(
             height: 10,
           ),
