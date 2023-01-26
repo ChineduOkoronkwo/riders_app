@@ -1,4 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+
+import '../authentication/auth_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -8,19 +12,19 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  // startTimer() {
-  //   Timer(const Duration(seconds: 8), () async {
-  //     Navigator.push(
-  //         context, MaterialPageRoute(builder: (c) => const AuthScreen()));
-  //   });
-  // }
+  startTimer() {
+    Timer(const Duration(seconds: 8), () async {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (c) => const AuthScreen()));
+    });
+  }
 
-  // @override
-  // void initState() {
-  //   super.initState();
+  @override
+  void initState() {
+    super.initState();
 
-  //   startTimer();
-  // }
+    startTimer();
+  }
 
   @override
   Widget build(BuildContext context) {
