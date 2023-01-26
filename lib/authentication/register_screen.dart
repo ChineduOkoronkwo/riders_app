@@ -28,10 +28,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   }
 
-  Future<void> _getImage() async {
-
-  }
-
   List<Widget> _getTextFields() {
     return [
       CustomFormTextField(
@@ -64,7 +60,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       CustomFormTextField(
         controller: locationController,
         iconData: Icons.my_location,
-        hintText: "Address",
+        hintText: "Current Address",
       ),
       _getLocationButton(),
       const SizedBox(
