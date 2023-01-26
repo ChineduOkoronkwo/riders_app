@@ -1,9 +1,10 @@
-
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:riders_app/services/location_service.dart';
 import 'package:riders_app/validation/validation.dart';
 import 'package:riders_app/widgets/custom_form_text_field.dart';
 import 'package:riders_app/widgets/show_dialog.dart';
@@ -26,6 +27,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   XFile? imageXFile;
   final ImagePicker _imagePicker = ImagePicker();
+  Position? position;
+  List<Placemark>? placemarks;
 
   Future<void> _getImage() async {
     imageXFile = await _imagePicker.pickImage(source: ImageSource.gallery);
@@ -35,12 +38,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   Future<void> signup() async {
-    if (isValidImage() && _formKey.currentState!.validate()) {
-    }
+    if (isValidImage() && _formKey.currentState!.validate()) {}
   }
 
   Future<void> getCurrentLocation() async {
-
+    position = await getCurrentLocationPosition();
+    locationController.text = await getCurrentLocationAddress(position!);
   }
 
   String? validateConfirmPass(String? value) {
