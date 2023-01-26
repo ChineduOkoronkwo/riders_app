@@ -1,6 +1,7 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:riders_app/validation/validation.dart';
 
 import 'custom_form_text_field.dart';
 
@@ -17,7 +18,8 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController passwordController = TextEditingController();
 
   Future<void> login() async {
-
+    if (_formKey.currentState!.validate()) {
+    }
   }
 
   Widget _getDpImage() {
@@ -65,12 +67,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   controller: emailController,
                   iconData: Icons.email,
                   hintText: "Email",
+                  validator: validateEmailField,
                 ),
                 CustomFormTextField(
                   controller: passwordController,
                   iconData: Icons.lock,
                   hintText: "Password",
                   obscureText: true,
+                  validator: validatePassword,
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),

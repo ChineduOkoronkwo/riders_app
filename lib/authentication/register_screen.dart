@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:riders_app/validation/validation.dart';
 
 import 'custom_form_text_field.dart';
 
@@ -34,11 +35,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   Future<void> signup() async {
-
+    if (_formKey.currentState!.validate()) {
+    }
   }
 
   Future<void> getCurrentLocation() async {
 
+  }
+
+  String? validateConfirmPass(String? value) {
+    return validateConfirmPassword(value, passwordController.text);
   }
 
   List<Widget> _getTextFields() {
@@ -47,33 +53,39 @@ class _RegisterScreenState extends State<RegisterScreen> {
         controller: nameController,
         iconData: Icons.person,
         hintText: "Name",
+        validator: validateNameField,
       ),
       CustomFormTextField(
         controller: emailController,
         iconData: Icons.email,
         hintText: "Email",
+        validator: validateEmailField,
       ),
       CustomFormTextField(
         controller: passwordController,
         iconData: Icons.lock,
         hintText: "Password",
         obscureText: true,
+        validator: validatePassword,
       ),
       CustomFormTextField(
         controller: confirmPasswordController,
         iconData: Icons.lock,
         hintText: "Confirm Password",
         obscureText: true,
+        validator: validateConfirmPass,
       ),
       CustomFormTextField(
         controller: phoneController,
         iconData: Icons.phone,
         hintText: "Phone",
+        validator: validatePhoneField,
       ),
       CustomFormTextField(
         controller: locationController,
         iconData: Icons.my_location,
         hintText: "Current Address",
+        validator: validateAddressField,
       ),
       _getLocationButton(),
       const SizedBox(
