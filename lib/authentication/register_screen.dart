@@ -5,8 +5,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:riders_app/validation/validation.dart';
-
-import 'custom_form_text_field.dart';
+import 'package:riders_app/widgets/custom_form_text_field.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});

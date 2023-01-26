@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:riders_app/validation/validation.dart';
 
-import 'custom_form_text_field.dart';
+import '../widgets/custom_form_text_field.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
