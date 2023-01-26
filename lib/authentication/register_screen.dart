@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:riders_app/validation/validation.dart';
 import 'package:riders_app/widgets/custom_form_text_field.dart';
+import 'package:riders_app/widgets/show_dialog.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -34,7 +35,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   Future<void> signup() async {
-    if (_formKey.currentState!.validate()) {
+    if (isValidImage() && _formKey.currentState!.validate()) {
     }
   }
 
@@ -44,6 +45,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   String? validateConfirmPass(String? value) {
     return validateConfirmPassword(value, passwordController.text);
+  }
+
+  bool isValidImage() {
+    if (imageXFile == null) {
+      showErrorDialog(context, "Please select an image!");
+      return false;
+    }
+    return true;
   }
 
   List<Widget> _getTextFields() {
