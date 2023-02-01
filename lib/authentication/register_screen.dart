@@ -1,10 +1,11 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:riders_app/home_screen/home_screen.dart';
 import 'package:riders_app/services/location_service.dart';
+import 'package:riders_app/services/user_services.dart';
 import 'package:riders_app/validation/validation.dart';
 import 'package:riders_app/widgets/custom_form_text_field.dart';
 import 'package:riders_app/widgets/show_dialog.dart';
@@ -28,7 +29,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   XFile? imageXFile;
   final ImagePicker _imagePicker = ImagePicker();
   Position? position;
-  List<Placemark>? placemarks;
 
   Future<void> _getImage() async {
     imageXFile = await _imagePicker.pickImage(source: ImageSource.gallery);
@@ -38,7 +38,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   Future<void> signup() async {
-    if (isValidImage() && _formKey.currentState!.validate()) {}
+    if (isValidImage() && _formKey.currentState!.validate()) {
+      showLoadingDialog(context, "Processing...");
+      await uploadImage(imageXFile!.path).then((imageUrl) async {
+        var user =
+            await createSeller(emailController.text, passwordController.text);
+        await saveUserData(user.uid, emailController.text, nameController.text,
+            imageUrl, phoneController.text, locationController.text, position!);
+        await setUserDataLocally(user.uid);
+      }).then((value) {
+        Navigator.pop(context);
+        Navigator.push(context, MaterialPageRoute(builder: (c) => const HomeScreen()));
+      }).catchError((error) {
+        Navigator.pop(context);
+        // Ideally, error should be pushed to a remote server.
+        // For now will show the error.
+        showErrorDialog(context, error.toString());
+      });
+    }
   }
 
   Future<void> getCurrentLocation() async {

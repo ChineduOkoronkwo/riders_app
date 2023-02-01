@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'error_dialog.dart';
+import 'loading_dialog.dart';
 
 Future<void> showCustomDialog(BuildContext context, Widget dialog) async {
   return showDialog<void>(
@@ -12,4 +13,9 @@ Future<void> showCustomDialog(BuildContext context, Widget dialog) async {
 
 Future<void> showErrorDialog(BuildContext context, String message) {
   return showCustomDialog(context, ErrorDialog(message: message));
+}
+
+
+Future<void> showLoadingDialog(BuildContext context, String message) {
+  return showCustomDialog(context, LoadingDialog(message: message));
 }

@@ -79,7 +79,7 @@ Future<void> login(String email, String password) async {
   });
 }
 
-void signout() {
-  firebaseAuth.signOut();
+Future<void> signOut() async {
+  await firebaseAuth.signOut();
   // TO-DO: remove user details from loca storage
 }
