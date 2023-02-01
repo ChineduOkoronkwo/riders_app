@@ -76,7 +76,7 @@ String getUserName() {
   return sharedPreferences!.getString("name")!;
 }
 
-Future<void> login(String email, String password) async {
+Future<void> loginUser(String email, String password) async {
   await firebaseAuth
       .signInWithEmailAndPassword(email: email, password: password)
       .then((auth) async {

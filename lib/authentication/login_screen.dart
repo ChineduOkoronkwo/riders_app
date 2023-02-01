@@ -1,9 +1,9 @@
-
-
 import 'package:flutter/material.dart';
+import 'package:riders_app/home_screen/home_screen.dart';
+import 'package:riders_app/services/user_services.dart';
 import 'package:riders_app/validation/validation.dart';
-
-import '../widgets/custom_form_text_field.dart';
+import 'package:riders_app/widgets/custom_form_text_field.dart';
+import 'package:riders_app/widgets/show_dialog.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -19,6 +19,15 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<void> login() async {
     if (_formKey.currentState!.validate()) {
+      showLoadingDialog(context, 'Authenticating...');
+      await loginUser(emailController.text, passwordController.text).then((value) {
+        Navigator.pop(context);
+        Navigator.push(
+              context, MaterialPageRoute(builder: (c) => const HomeScreen()));
+      }).catchError((error) {
+        Navigator.pop(context);
+        showErrorDialog(context, error.toString());
+      });
     }
   }
 
