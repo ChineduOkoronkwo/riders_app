@@ -10,6 +10,10 @@ import 'package:uuid/uuid.dart';
 SharedPreferences? sharedPreferences;
 FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
+String getCollection() {
+  return "riders";
+}
+
 Future<void> getSharedPreferences() async {
   sharedPreferences ??= await SharedPreferences.getInstance();
 }
@@ -17,8 +21,10 @@ Future<void> getSharedPreferences() async {
 Future<String> uploadImage(String path, [String? filename]) async {
   filename ??= const Uuid().v1();
   String? imageUrl;
-  fstore.Reference reference =
-      fstore.FirebaseStorage.instance.ref().child("sellers").child(filename);
+  fstore.Reference reference = fstore.FirebaseStorage.instance
+      .ref()
+      .child(getCollection())
+      .child(filename);
   fstore.UploadTask uploadTask = reference.putFile(File(path));
   fstore.TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() {});
   await taskSnapshot.ref.getDownloadURL().then((url) {
@@ -27,7 +33,7 @@ Future<String> uploadImage(String path, [String? filename]) async {
   return imageUrl!;
 }
 
-Future<User> createSeller(String email, String password) async {
+Future<User> createRider(String email, String password) async {
   User? currentUser;
   await firebaseAuth
       .createUserWithEmailAndPassword(email: email, password: password)
@@ -37,11 +43,11 @@ Future<User> createSeller(String email, String password) async {
 
 Future<void> saveUserData(String uid, String email, String name,
     String imageUrl, String phone, String address, Position position) async {
-  FirebaseFirestore.instance.collection("sellers").doc(uid).set({
-    "sellerUID": uid,
-    "sellerEmail": email,
-    "sellerName": name,
-    "sellerAvatarUrl": imageUrl,
+  FirebaseFirestore.instance.collection(getCollection()).doc(uid).set({
+    "riderUID": uid,
+    "riderEmail": email,
+    "riderName": name,
+    "riderAvatarUrl": imageUrl,
     "phone": phone,
     "address": address,
     "status": "approved",
@@ -53,17 +59,16 @@ Future<void> saveUserData(String uid, String email, String name,
 
 Future<void> setUserDataLocally(String uid) async {
   await FirebaseFirestore.instance
-      .collection("sellers")
+      .collection(getCollection())
       .doc(uid)
       .get()
       .then((snapshot) async {
     await getSharedPreferences();
     await sharedPreferences!.setString("uid", uid);
+    await sharedPreferences!.setString("email", snapshot.data()!["riderEmail"]);
+    await sharedPreferences!.setString("name", snapshot.data()!["riderName"]);
     await sharedPreferences!
-        .setString("email", snapshot.data()!["sellerEmail"]);
-    await sharedPreferences!.setString("name", snapshot.data()!["sellerName"]);
-    await sharedPreferences!
-        .setString("photoUrl", snapshot.data()!["sellerAvatarUrl"]);
+        .setString("photoUrl", snapshot.data()!["riderAvatarUrl"]);
   });
 }
 

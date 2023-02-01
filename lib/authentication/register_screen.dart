@@ -42,13 +42,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
       showLoadingDialog(context, "Processing...");
       await uploadImage(imageXFile!.path).then((imageUrl) async {
         var user =
-            await createSeller(emailController.text, passwordController.text);
+            await createRider(emailController.text, passwordController.text);
         await saveUserData(user.uid, emailController.text, nameController.text,
             imageUrl, phoneController.text, locationController.text, position!);
         await setUserDataLocally(user.uid);
       }).then((value) {
         Navigator.pop(context);
-        Navigator.push(context, MaterialPageRoute(builder: (c) => const HomeScreen()));
+        Navigator.push(
+            context, MaterialPageRoute(builder: (c) => const HomeScreen()));
       }).catchError((error) {
         Navigator.pop(context);
         // Ideally, error should be pushed to a remote server.
